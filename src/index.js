@@ -9,6 +9,21 @@ import rootReducer from './redux/reducers/_root.reducer'; // imports ./redux/red
 import rootSaga from './redux/sagas/_root.saga'; // imports ./redux/sagas/index.js
 
 import App from './components/App/App';
+import axios from 'axios';
+import { takeEvery } from 'redux-saga/effects';
+
+
+function* rootSaga(){
+yield takeEvery('DELETE_YOUR_ITEM', deleteYourItem)
+}
+
+function* deleteYourItem(action) {
+  const id = action.payload;
+  try{ yield call(axios.delete, `/api/shelf/${id}`);
+  } catch (error) {
+    console.log(('Error DELETING', error));
+  }
+}
 
 const sagaMiddleware = createSagaMiddleware();
 

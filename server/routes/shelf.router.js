@@ -38,6 +38,20 @@ router.delete('/:id',rejectUnauthenticated, (req, res) => {
  */
 router.put('/:id', (req, res) => {
   // endpoint functionality
+  const queryText = `
+    UPDATE "item"
+    SET "description" = $1, "image_url" = $2
+    WHERE "user_id" = $4 AND "id" = $3;
+  `;
+ pool.query(queryText, [req.user.id, req.params.id])
+ .then(result => {
+   console.log('item deleted');
+   res.sendStatus(201)
+ })
+ .catch(error => {
+   log('Error DELETE', error);
+   res.sendStatus(500)
+ })
 });
 
 /**
