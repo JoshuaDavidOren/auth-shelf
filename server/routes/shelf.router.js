@@ -6,13 +6,52 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
  * Get all of the items on the shelf
  */
 router.get('/', (req, res) => {
-  res.sendStatus(200); // For testing only, can be removed
+  const query = `SELECT * FROM item ORDER BY "id" ASC;`;
+  pool.query(query)
+  .then( result => {
+    res.send(result.rows);
+  })
+  .catch(err => {
+    console.log('Error : getting items', err);
+    res.sendStatus(200); // For testing only, can be removed
+  })
 });
 
 /**
  * Add an item for the logged in user to the shelf
  */
 router.post('/', (req, res) => {
+  console.log(req.body);
+  //RETURNING "id" will give back the id to the item created
+  const insertItem = `
+  INSERT INTO "item" ("description", "image_url")
+  VALUES ($1, $2)
+  RETURNING "id";`;
+  //For making the new item
+  pool.query(insertItem, [req.body.description, req.body.image_url])
+  .then( results => {
+    console.log('New Item id:', result.rows[0].id);
+
+    const createItemId = results.rows[0].id
+//This id the handle the user_id reference
+    const insertItemUserQuery = `
+    INSERT INTO "item" ("item_id", "user_id")
+    VALUES ($1, $2);`
+    //Second query handles the user_id that goes with the new item
+    pool.query(insertItemUserQuery, [createItemId, req.body.user_id])
+    .then( results => {
+      res.sendStatus(201);
+    })//Second query catch
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500)
+    })
+  })
+    //First query catch
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500)
+  })
   // endpoint functionality
 });
 
