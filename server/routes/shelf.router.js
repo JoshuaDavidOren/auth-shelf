@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
   })
   .catch(err => {
     console.log('Error : getting items', err);
-    res.sendStatus(200); // For testing only, can be removed
+    res.sendStatus(500); // For testing only, can be removed
   })
 });
 

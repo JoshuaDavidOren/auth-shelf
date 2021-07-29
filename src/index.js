@@ -13,17 +13,31 @@ import axios from 'axios';
 import { takeEvery } from 'redux-saga/effects';
 
 
-function* rootSaga(){
-yield takeEvery('DELETE_YOUR_ITEM', deleteYourItem)
-}
+function* watcherSaga(){
+yield takeEvery('DELETE_YOUR_ITEM', deleteYourItem);
+yield takeEvery('ADD_ITEM', addItem);
+};
 
 function* deleteYourItem(action) {
   const id = action.payload;
-  try{ yield call(axios.delete, `/api/shelf/${id}`);
-  } catch (error) {
+  try { yield call(axios.delete, `/api/shelf/${id}`);
+  } 
+  catch (error) {
     console.log(('Error DELETING', error));
+  };
+};
+
+function* addItem(action) {
+  const item = action.payload;
+  try {
+    yield call (axios.post, `/api/shelf/${item}`);
+    yield put ({type: 'ADD', payload: item});
   }
-}
+  catch (error) {
+    console.log('Error in addItem:', addItem);
+  };
+};
+
 
 const sagaMiddleware = createSagaMiddleware();
 
