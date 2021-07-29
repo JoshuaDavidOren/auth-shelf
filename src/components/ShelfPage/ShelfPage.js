@@ -53,7 +53,24 @@ function ShelfPage() {
           <th>Uploaded By</th>
           <th>//deletebutton</th>
         </tr>
-        map
+        {item.map((item, index) => {
+          return ( <tr key={index}>
+            <td>{item.image_url}</td>
+            <td>{item.description}</td>
+            <td>{item.user_id}</td>
+            {
+              ( user.id === item.user_id) ?
+              <td><button onClick={dispatch({ type: 'DELETE_YOUR_ITEM', payload: item.id})}></button></td> :
+              <td></td>
+            }
+            {/* if( user.id === item.user_id) {
+               <td><button onClick={dispatch({ type: 'DELETE_YOUR_ITEM', payload: item.id})}></button></td>
+              } */}
+          </tr>
+            )
+        })}
+
+        
 
 
       </table>
