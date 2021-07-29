@@ -36,22 +36,22 @@ router.delete('/:id',rejectUnauthenticated, (req, res) => {
 /**
  * Update an item if it's something the logged in user added
  */
-router.put('/:id', (req, res) => {
+router.put('/:id', rejectUnauthenticated, (req, res) => {
   // endpoint functionality
   const queryText = `
     UPDATE "item"
     SET "description" = $1, "image_url" = $2
     WHERE "user_id" = $4 AND "id" = $3;
   `;
- pool.query(queryText, [req.user.id, req.params.id])
- .then(result => {
-   console.log('item deleted');
-   res.sendStatus(201)
- })
- .catch(error => {
-   log('Error DELETE', error);
-   res.sendStatus(500)
- })
+  pool.query(queryText, [req.body.description, req.body.image_url, req.user.id, req.params.id])
+  .then(result => {
+    console.log('item updated');
+    res.sendStatus(201)
+  })
+  .catch(error => {
+    log('Error update', error);
+    res.sendStatus(500)
+  })
 });
 
 /**
@@ -60,6 +60,21 @@ router.put('/:id', (req, res) => {
  */
 router.get('/count', (req, res) => {
   // endpoint functionality
+  const queryText = `
+    SELECT "user"."username", COUNT("item"."user_id") AS "item_count"
+    FROM "user"
+    JOIN "item" ON "user"."id" = "item"."user_id"
+    GROUP BY "item"."user_id", "user"."username";
+  `;
+  pool.query(queryText)
+  .then(result => {
+    console.log('get item counts by user SUCCESSFULL');
+    res.sendStatus(201)
+  })
+  .catch(error => {
+    log('Error getting item counts', error);
+    res.sendStatus(500)
+  })
 });
 
 /**
@@ -67,6 +82,19 @@ router.get('/count', (req, res) => {
  */
 router.get('/:id', (req, res) => {
   // endpoint functionality
+  const queryText = `
+    SELECT * FROM "item"
+    WHERE "item"."id" = $1;
+  `;
+  pool.query(queryText, [req.params.id])
+  .then(result => {
+    console.log('get by id');
+    res.sendStatus(201)
+  })
+  .catch(error => {
+    log('Error get by id', error);
+    res.sendStatus(500)
+  })
 });
 
 module.exports = router;
