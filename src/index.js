@@ -13,7 +13,7 @@ import axios from 'axios';
 import { takeEvery } from 'redux-saga/effects';
 
 
-function* rootSaga(){
+function* watcherSaga(){
 yield takeEvery('DELETE_YOUR_ITEM', deleteYourItem)
 }
 
