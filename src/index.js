@@ -25,6 +25,12 @@ function* deleteYourItem(action) {
   }
 }
 
+const itemListReducer = (state = [], action) => {
+  if( action.type === 'SET_ITEMS'){
+    return state = action.payload
+  }
+}
+
 const sagaMiddleware = createSagaMiddleware();
 
 // this line creates an array of all of redux middleware you want to use
