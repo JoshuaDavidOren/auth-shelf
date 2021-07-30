@@ -1,16 +1,10 @@
 const userItemReducer = (state = [], action) => {
     switch (action.type) {
-        case 'ADD':
+        case 'SET_USER':
             return state = [...state, action.payload];
-        case 'SET':
-            return action.payload;
         default:
             return state;
     };
-    // if( action.type === 'ADD'){
-    //   return state = [...state, action.payload];
-    // }
-    // return state
   };
 
   export default userItemReducer;
