@@ -2,6 +2,8 @@ const itemListReducer = (state = [], action) => {
     switch (action.type) {
         case 'ADD':
             return state = [...state, action.payload];
+        case 'SET':
+            return action.payload;
         default:
             return state;
     };
