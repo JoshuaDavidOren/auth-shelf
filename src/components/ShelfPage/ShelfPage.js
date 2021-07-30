@@ -1,17 +1,19 @@
 import React, {useState} from 'react';
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function ShelfPage() {
   const dispatch = useDispatch();
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
+  const itemReducer = useSelector(store => store.itemListReducer);
+  const user = useSelector(store => store.user);
 
   const submitItem = () => {
-    const itemToSend = ({
+    const itemToSend = {
       description: description,
       image: image,
-    });
+    };
     console.log(itemToSend);
     if (itemToSend.description == '') {
       alert('Please enter an item description');
@@ -53,7 +55,7 @@ function ShelfPage() {
           <th>Uploaded By</th>
           <th>//deletebutton</th>
         </tr>
-        {item.map((item, index) => {
+        {itemReducer.map((item, index) => {
           return ( <tr key={index}>
             <td>{item.image_url}</td>
             <td>{item.description}</td>
