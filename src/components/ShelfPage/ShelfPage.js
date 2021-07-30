@@ -10,14 +10,14 @@ function ShelfPage() {
   const submitItem = () => {
     const itemToSend = ({
       description: description,
-      image: image,
+      image_url: image,
     });
     console.log(itemToSend);
     if (itemToSend.description == '') {
       alert('Please enter an item description');
       return false;
     }
-    if (itemToSend.image == '') {
+    if (itemToSend.image_url == '') {
       alert('Please enter an item image URL');
       return false;
     }
