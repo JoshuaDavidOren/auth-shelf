@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -8,6 +8,10 @@ function ShelfPage() {
   const [image, setImage] = useState('');
   const itemReducer = useSelector(store => store.itemListReducer);
   const user = useSelector(store => store.user);
+
+  useEffect(() => {
+    dispatch({ type: 'GET_ITEMS' });
+}, []);
 
   const submitItem = () => {
     const itemToSend = {
@@ -30,7 +34,6 @@ function ShelfPage() {
     setDescription('');
     setImage('');
   };
-  
   
   return (
     <div className="container">
