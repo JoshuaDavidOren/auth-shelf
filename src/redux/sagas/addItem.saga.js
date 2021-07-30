@@ -6,7 +6,7 @@ function* addItem(action) {
     const item = action.payload;
     console.log(item);
     try {
-        yield call (axios.post, `/api/shelf/${item}`);
+        yield call (axios.post, `/api/shelf`, action.payload);
         yield put ({type: 'ADD', payload: item});
     }
     catch (error) {
