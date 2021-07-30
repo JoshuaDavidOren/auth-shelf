@@ -12,7 +12,7 @@ function ShelfPage() {
   const submitItem = () => {
     const itemToSend = {
       description: description,
-      image: image,
+      image_url: image,
     };
     console.log(itemToSend);
     if (itemToSend.description == '') {
