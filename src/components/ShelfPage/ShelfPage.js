@@ -19,7 +19,7 @@ function ShelfPage() {
       alert('Please enter an item description');
       return false;
     }
-    if (itemToSend.image == '') {
+    if (itemToSend.image_url == '') {
       alert('Please enter an item image URL');
       return false;
     }
