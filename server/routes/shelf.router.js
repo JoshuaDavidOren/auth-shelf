@@ -20,37 +20,22 @@ router.get('/', (req, res) => {
 /**
  * Add an item for the logged in user to the shelf
  */
-router.post('/', (req, res) => {
+router.post('/', rejectUnauthenticated, (req, res) => {
   console.log(req.body);
   //RETURNING "id" will give back the id to the item created
   const insertItem = `
-  INSERT INTO "item" ("description", "image_url")
-  VALUES ($1, $2)
-  RETURNING "id";`;
-  //For making the new item
-  pool.query(insertItem, [req.body.description, req.body.image_url])
-  .then( results => {
-    console.log('New Item id:', result.rows[0].id);
+  INSERT INTO "item" ("description", "image_url", "user_id")
+  VALUES ($1, $2, $3);`;
 
-    const createItemId = results.rows[0].id
-//This id the handle the user_id reference
-    const insertItemUserQuery = `
-    INSERT INTO "item" ("item_id", "user_id")
-    VALUES ($1, $2);`
-    //Second query handles the user_id that goes with the new item
-    pool.query(insertItemUserQuery, [createItemId, req.body.user_id])
-    .then( results => {
+  //For making the new item
+  pool.query(insertItem, [req.body.description, req.body.image_url, req.user.id])
+  .then( results => {
+    console.log('Add item for logged in user SUCCESSFUL');
       res.sendStatus(201);
-    })//Second query catch
-    .catch(err => {
-      console.log(err);
-      res.sendStatus(500)
     })
-  })
-    //First query catch
-    .catch(err => {
-      console.log(err);
-      res.sendStatus(500)
+  .catch(err => {
+    console.log(err);
+    res.sendStatus(500)
   })
   // endpoint functionality
 });
