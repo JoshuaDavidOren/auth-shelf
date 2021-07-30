@@ -6,7 +6,7 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
  * Get all of the items on the shelf
  */
 router.get('/', (req, res) => {
-  const query = `SELECT * FROM item ORDER BY "id" ASC;`;
+  const query = `SELECT * FROM "item" ORDER BY "id" ASC;`;
   pool.query(query)
   .then( result => {
     res.send(result.rows);
