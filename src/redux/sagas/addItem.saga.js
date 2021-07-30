@@ -14,8 +14,20 @@ function* addItem(action) {
     };
   };
 
+  function* deleteYourItem(action) {
+    const id = action.payload;
+    try {
+      yield call(axios.delete, `/api/shelf/${id}`);
+      yield put ({type: 'GET_ITEMS'});
+    }
+    catch (error) {
+      console.log(('Error DELETING', error));
+    };
+  };
+
   function* addItemSaga() {
     yield takeEvery('ADD_ITEM', addItem);
+    yield takeEvery('DELETE_YOUR_ITEM', deleteYourItem);
   };
 
   export default addItemSaga;

@@ -13,6 +13,8 @@ function ShelfPage() {
     dispatch({ type: 'GET_ITEMS' });
 }, []);
 
+  
+
   const submitItem = () => {
     const itemToSend = {
       description: description,
@@ -54,22 +56,20 @@ function ShelfPage() {
       <table>
         <thead>
           <tr>
-            <th>//picture</th>
+            <th></th>
             <th>Description</th>
-            <th>Uploaded By</th>
-            <th>//deletebutton</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {itemReducer.map((item, index) => {
             return ( <tr key={index}>
-              <td>{item.image_url}</td>
+              <td><img src={item.image_url} /></td>
               <td>{item.description}</td>
-              <td>{item.user_id}</td>
               {
                 ( user.id === item.user_id) ?
-                <td><button onClick={dispatch({ type: 'DELETE_YOUR_ITEM', payload: item.id})}></button></td> :
-                <td></td>
+                <td><button onClick={() => dispatch({ type: 'DELETE_YOUR_ITEM', payload: item.id})}>Delete</button></td> :
+                <td><button disabled>Delete</button></td>
               }
               {/* if( user.id === item.user_id) {
                 <td><button onClick={dispatch({ type: 'DELETE_YOUR_ITEM', payload: item.id})}></button></td>
