@@ -11,7 +11,7 @@ body {
 
 img {
   display: inline-block;
-  max-width: 100%;
+  max-width: 200px;
 }
 table {
   font-family: arial, sans-serif;
