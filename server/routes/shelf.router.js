@@ -121,6 +121,26 @@ router.get('/:id', (req, res) => {
   })
 });
 
+/**
+ * Return items added by current user
+ */
+ router.get('/userItems', rejectUnauthenticated, (req, res) => {
+  // endpoint functionality
+  const queryText = `
+    SELECT * FROM "item"
+    WHERE "item"."user_id" = $1;
+  `;
+  pool.query(queryText, [req.user.id])
+  .then(result => {
+    console.log('get items by user SUCCESSFUL');
+    res.send(result.rows);
+  })
+  .catch(error => {
+    log('Error get by user', error);
+    res.sendStatus(500)
+  })
+});
+
 module.exports = router;
 
 
