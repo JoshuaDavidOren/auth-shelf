@@ -13,8 +13,20 @@ function* getItems() {
     };
   };
 
+  function* getUserItems() {
+    try {
+      const items = yield axios.get(`/api/shelf/userItems`);
+      console.log('*** getUSERItems: *** ', items.data);
+      yield put ({type: 'SET_USER', payload: items.data});
+    }
+    catch (error) {
+      console.log('Error in getItems:', error);
+    };
+  }; 
+
   function* getItemsSaga() {
     yield takeLatest('GET_ITEMS', getItems);
+    yield takeLatest('GET_USER_ITEMS', getUserItems);
   };
 
   export default getItemsSaga;
